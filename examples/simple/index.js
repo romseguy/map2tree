@@ -1,4 +1,4 @@
-import mapToTree from 'mapToTree'
+import mapToTree from 'mapToTree';
 
 const someMap = {
   someStore: {
@@ -18,4 +18,6 @@ const someMap = {
 
 const tree = mapToTree(someMap, 'map');
 
+/*eslint-disable*/
 console.log(tree);
+/*eslint-enable*/

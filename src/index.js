@@ -1,6 +1,6 @@
 import isArray from 'lodash/lang/isArray';
 import isPlainObject from 'lodash/lang/isPlainObject';
-import mapValues from 'lodash/object/mapValues'
+import mapValues from 'lodash/object/mapValues';
 
 function visit(parent, visitFn, childrenFn) {
   if (!parent) return;
@@ -33,7 +33,9 @@ export default function mapStateToTree(state, key, tree) {
     return {};
   }
 
+  /*eslint-disable*/
   tree = tree || { name: key, children: [] };
+  /*eslint-enable*/
   const currentNode = getNode(tree, key);
 
   mapValues(state, (stateValue, stateKey) => {
