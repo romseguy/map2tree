@@ -19,7 +19,7 @@ module.exports = {
   ],
   resolve: {
     alias: {
-      'mapToTree': path.join(__dirname, '..', '..', 'src')
+      'map2tree': path.join(__dirname, '..', '..', 'src')
     },
     extensions: ['', '.js']
   },

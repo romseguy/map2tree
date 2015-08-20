@@ -1,12 +1,12 @@
-import mapToTree from 'mapToTree';
+import map2tree from 'map2tree';
 
 const someMap = {
   someStore: {
     todos: [
       { title: 'map'},
-      { title: 'To' },
-      { title: 'Tree' },
-      { title: 'mapToTree' }
+      { title: 'to' },
+      { title: 'tree' },
+      { title: 'map2tree' }
     ],
     completedCount: 1
   },
@@ -16,7 +16,7 @@ const someMap = {
   }
 };
 
-const tree = mapToTree(someMap, 'map');
+const tree = map2tree(someMap, 'map');
 
 /*eslint-disable*/
 console.log(tree);

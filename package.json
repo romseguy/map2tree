@@ -1,12 +1,12 @@
 {
-  "name": "mapToTree",
-  "version": "1.0.0",
+  "name": "map2tree",
+  "version": "0.0.0",
   "description": "Utility for mapping maps to trees",
   "main": "lib/index.js",
   "scripts": {
     "clean": "rimraf lib dist",
     "build": "babel src --out-dir lib",
-    "build:umd": "webpack src/index.js dist/mapToTree.js && NODE_ENV=production webpack src/index.js dist/mapToTree.min.js",
+    "build:umd": "webpack src/index.js dist/map2tree.js && NODE_ENV=production webpack src/index.js dist/map2tree.min.js",
     "lint": "eslint src examples",
     "test": "NODE_ENV=test mocha",
     "test:watch": "NODE_ENV=test mocha --watch",
@@ -15,17 +15,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/romseguy/mapToTree.git"
+    "url": "https://github.com/romseguy/map2tree.git"
   },
   "keywords": [
-    "mapToTree-keywords"
+    "map2tree",
+    "map2tree",
+    "map",
+    "tree"
   ],
   "author": "romseguy",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/romseguy/mapToTree/issues"
+    "url": "https://github.com/romseguy/map2tree/issues"
   },
-  "homepage": "https://github.com/romseguy/mapToTree",
+  "homepage": "https://github.com/romseguy/map2tree",
   "devDependencies": {
     "babel": "^5.5.8",
     "babel-core": "^5.6.18",

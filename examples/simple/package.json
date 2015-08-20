@@ -1,23 +1,23 @@
 {
-  "name": "mapToTree-example",
+  "name": "map2tree-example",
   "version": "1.0.0",
-  "description": "mapToTree-example",
+  "description": "map2tree-example",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/romseguy/mapToTree.git"
+    "url": "https://github.com/romseguy/map2tree.git"
   },
   "keywords": [
-    "mapToTree-keywords"
+    "map2tree-keywords"
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/romseguy/mapToTree/issues"
+    "url": "https://github.com/romseguy/map2tree/issues"
   },
-  "homepage": "https://github.com/romseguy/mapToTree",
+  "homepage": "https://github.com/romseguy/map2tree",
   "dependencies": {
     "lodash": "^3.10.1"
   },

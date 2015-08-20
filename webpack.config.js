@@ -29,7 +29,7 @@ module.exports = {
     }]
   },
   output: {
-    library: 'mapToTree',
+    library: 'map2tree',
     libraryTarget: 'umd'
   },
   plugins: plugins,
