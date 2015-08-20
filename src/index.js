@@ -29,7 +29,7 @@ function getNode(tree, key) {
 }
 
 export default function mapStateToTree(state, key, tree) {
-  if (!isArray(state) && !isPlainObject(state)) {
+  if (!isPlainObject(state)) {
     return {};
   }
 
@@ -40,14 +40,12 @@ export default function mapStateToTree(state, key, tree) {
 
   mapValues(state, (stateValue, stateKey) => {
     let newNode = { name: stateKey };
-    let leaf = false;
 
     if (isArray(stateValue) || isPlainObject(stateValue)) {
       newNode.children = [];
 
       if (isArray(stateValue) && stateValue.length !== 0) {
         stateValue.forEach((obj, i) => newNode.children.push({ name: `${stateKey}Child${i}`, ...obj }));
-        leaf = true;
       }
     } else {
       newNode = { ...newNode, value: stateValue };
@@ -55,7 +53,7 @@ export default function mapStateToTree(state, key, tree) {
 
     currentNode.children.push(newNode);
 
-    mapStateToTree(leaf ? false : stateValue, stateKey, tree);
+    mapStateToTree(stateValue, stateKey, tree);
   });
 
   return tree;
