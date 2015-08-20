@@ -17,7 +17,7 @@ function visit(parent, visitFn, childrenFn) {
 }
 
 function getNode(tree, key) {
-  let node;
+  let node = null;
 
   visit(tree, d => {
     if (d.name === key) {
@@ -28,8 +28,8 @@ function getNode(tree, key) {
   return node;
 }
 
-export default function mapStateToTree(state, key, tree) {
-  if (!isPlainObject(state)) {
+export default function map2tree(rootNode, key, tree) {
+  if (!isPlainObject(rootNode)) {
     return {};
   }
 
@@ -38,7 +38,11 @@ export default function mapStateToTree(state, key, tree) {
   /*eslint-enable*/
   const currentNode = getNode(tree, key);
 
-  mapValues(state, (stateValue, stateKey) => {
+  if (currentNode === null) {
+    return {};
+  }
+
+  mapValues(rootNode, (stateValue, stateKey) => {
     let newNode = { name: stateKey };
 
     if (isArray(stateValue) || isPlainObject(stateValue)) {
@@ -53,7 +57,7 @@ export default function mapStateToTree(state, key, tree) {
 
     currentNode.children.push(newNode);
 
-    mapStateToTree(stateValue, stateKey, tree);
+    map2tree(stateValue, stateKey, tree);
   });
 
   return tree;
