@@ -28,14 +28,11 @@ function getNode(tree, key) {
   return node;
 }
 
-export default function map2tree(rootNode, key, tree) {
+export default function map2tree(rootNode, key, tree={ name: key, children: [] }) {
   if (!isPlainObject(rootNode)) {
     return {};
   }
 
-  /*eslint-disable*/
-  tree = tree || { name: key, children: [] };
-  /*eslint-enable*/
   const currentNode = getNode(tree, key);
 
   if (currentNode === null) {
