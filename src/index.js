@@ -28,11 +28,12 @@ function getNode(tree, key) {
   return node;
 }
 
-export default function map2tree(rootNode, key, tree={ name: key, children: [] }) {
+export default function map2tree(rootNode, options = {key: 'state', pushMethod: 'push'}, tree = {name: options.key, children: []}) {
   if (!isPlainObject(rootNode)) {
     return {};
   }
 
+  const { key, pushMethod } = options;
   const currentNode = getNode(tree, key);
 
   if (currentNode === null) {
@@ -40,21 +41,21 @@ export default function map2tree(rootNode, key, tree={ name: key, children: [] }
   }
 
   mapValues(rootNode, (stateValue, stateKey) => {
-    let newNode = { name: stateKey };
+    let newNode = {name: stateKey};
 
     if (isArray(stateValue) || isPlainObject(stateValue)) {
       newNode.children = [];
 
       if (isArray(stateValue) && stateValue.length !== 0) {
-        stateValue.forEach((obj, i) => newNode.children.push({ name: `${stateKey}Child${i}`, ...obj }));
+        stateValue.forEach((obj, i) => newNode.children[pushMethod]({name: `${stateKey}Child${i}`, 'object': obj}));
       }
     } else {
-      newNode = { ...newNode, value: stateValue };
+      newNode = {...newNode, value: stateValue};
     }
 
-    currentNode.children.push(newNode);
+    currentNode.children[pushMethod](newNode);
 
-    map2tree(stateValue, stateKey, tree);
+    map2tree(stateValue, {key: stateKey, pushMethod}, tree);
   });
 
   return tree;
