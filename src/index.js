@@ -47,7 +47,10 @@ export default function map2tree(rootNode, options = {key: 'state', pushMethod: 
       newNode.children = [];
 
       if (isArray(stateValue) && stateValue.length !== 0) {
-        stateValue.forEach((obj, i) => newNode.children[pushMethod]({name: `${stateKey}Child${i}`, 'object': obj}));
+        stateValue.forEach((obj, i) => newNode.children[pushMethod]({
+          name: `${stateKey}Child${i}`,
+          [isPlainObject(obj) ? 'object' : 'value']: obj
+        }));
       }
     } else {
       newNode = {...newNode, value: stateValue};
