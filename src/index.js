@@ -7,9 +7,9 @@ function visit(parent, visitFn, childrenFn) {
 
   visitFn(parent);
 
-  let children = childrenFn(parent);
+  const children = childrenFn(parent);
   if (children) {
-    let count = children.length;
+    const count = children.length;
     for (let i = 0; i < count; i++) {
       visit(children[i], visitFn, childrenFn);
     }
@@ -28,12 +28,12 @@ function getNode(tree, key) {
   return node;
 }
 
-export default function map2tree(rootNode, options = {key: 'state', pushMethod: 'push'}, tree = {name: options.key, children: []}) {
+export default function map2tree(rootNode, options = {}, tree = {name: options.key, children: []}) {
   if (!isPlainObject(rootNode)) {
     return {};
   }
 
-  const { key, pushMethod } = options;
+  const { key = 'state', pushMethod = 'push' } = options;
   const currentNode = getNode(tree, key);
 
   if (currentNode === null) {

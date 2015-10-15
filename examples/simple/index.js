@@ -1,4 +1,5 @@
 import map2tree from 'map2tree';
+import pretty from 'json-pretty';
 
 const someMap = {
   someStore: {
@@ -16,8 +17,9 @@ const someMap = {
   }
 };
 
-const tree = map2tree(someMap, 'map');
+const tree = map2tree(someMap, {key: 'tree'});
 
-/*eslint-disable*/
-console.log(tree);
-/*eslint-enable*/
+let json = pretty(tree);
+json = json.replace(/\n/g, '<br>');
+json = json.replace(/\s{2}/g, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+document.getElementById('root').innerHTML = json;
