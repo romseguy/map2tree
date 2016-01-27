@@ -2,6 +2,16 @@ map2tree
 =========================
 Just a function™
 
+Usage:
+
+
+```javascript
+map2tree(someMap, options = {
+  key: 'state',      // the name you want for as the root node of the output tree
+  pushMethod: 'push' // use 'unshift' to change the order children nodes are added
+})
+```
+
 Input:
 
 ```javascript
