@@ -36,7 +36,7 @@ Output:
 
 ```javascript
 {
-  name: `${options.key)`,
+  name: `${options.key}`,
   children: [
     {
       name: 'someStore',
