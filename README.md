@@ -36,7 +36,7 @@ Output:
 
 ```javascript
 {
-  name: `${whateverNameYouPassedAsSecondArgument)`,
+  name: `${options.key)`,
   children: [
     {
       name: 'someStore',
@@ -45,7 +45,7 @@ Output:
           name: 'todos',
           children: [
             {
-              name: 'todo[0'],
+              name: 'todo[0]',
               object: {
                 title: 'map'
               }
