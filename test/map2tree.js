@@ -2,6 +2,14 @@ import test from 'tape';
 import map2tree from '../src';
 import immutable from 'immutable';
 
+test('# rootNodeKey', assert => {
+  const map = {};
+  const options = {key: 'foo'};
+
+  assert.equal(map2tree(map, options).name, 'foo');
+  assert.end();
+});
+
 test('# shallow map', nest => {
   nest.test('## null', assert => {
     const map = {
