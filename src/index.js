@@ -29,18 +29,19 @@ function getNode(tree, key) {
 }
 
 export default function map2tree(root, options = {}, tree = {name: options.key || 'state', children: []}) {
-  if (!isPlainObject(root)) {
+  if (!isPlainObject(root) && !root.toJS) {
     return {};
   }
 
-  const { key = 'state', pushMethod = 'push' } = options;
-  const currentNode = getNode(tree, key);
+  const { key: rootNodeKey = 'state', pushMethod = 'push' } = options;
+  const currentNode = getNode(tree, rootNodeKey);
 
   if (currentNode === null) {
     return {};
   }
 
-  mapValues(root, (value, key) => {
+  mapValues(root.toJS ? root.toJS() : root, (maybeImmutable, key) => {
+    const value = maybeImmutable.toJS ? maybeImmutable.toJS() : maybeImmutable;
     let newNode = {name: key};
 
     if (isArray(value)) {
@@ -50,7 +51,7 @@ export default function map2tree(root, options = {}, tree = {name: options.key |
         newNode.children[pushMethod]({
           name: `${key}[${i}]`,
           [isPlainObject(value[i]) ? 'object' : 'value']: value[i]
-        })
+        });
       }
     } else if (isPlainObject(value)) {
       newNode.children = [];

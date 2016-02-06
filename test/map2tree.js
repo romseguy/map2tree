@@ -38,6 +38,22 @@ test('# shallow map', nest => {
     assert.deepEqual(map2tree(immutable.fromJS(map)), expected, 'immutable');
     assert.end();
   });
+
+  nest.test('## immutable Map', assert => {
+    const map = {
+      a: immutable.fromJS({aa: 'foo', ab: 'bar'})
+    };
+
+    const expected = {
+      name: 'state',
+      children: [
+        {name: 'a', children: [{name: 'aa', value: 'foo'}, {name: 'ab', value: 'bar'}]}
+      ]
+    };
+
+    assert.deepEqual(map2tree(map), expected);
+    assert.end();
+  })
 });
 
 test('# deep map', assert => {
@@ -67,7 +83,7 @@ test('# deep map', assert => {
   assert.end();
 });
 
-test('#array map', nest => {
+test('# array map', nest => {
   const map = {
     a: [
       1,
