@@ -46,7 +46,7 @@ export default function map2tree(root, options = {}, tree = {name: options.key |
     if (isArray(value)) {
       newNode.children = [];
 
-      for (let i = 0; i <= value.length; i++) {
+      for (let i = 0; i < value.length; i++) {
         newNode.children[pushMethod]({
           name: `${key}[${i}]`,
           [isPlainObject(value[i]) ? 'object' : 'value']: value[i]

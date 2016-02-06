@@ -6,7 +6,7 @@ The following opinions must be taken into account since the primary use case of 
 - Provides support for [Immutable.js](https://github.com/facebook/immutable-js) data structures (only List and Map though).
 
 
-# Usage:
+# Usage
 
 
 ```javascript
@@ -16,7 +16,7 @@ map2tree(someMap, options = {
 })
 ```
 
-# Input:
+# Input
 
 ```javascript
 const someMap = {
@@ -36,7 +36,7 @@ const someMap = {
 };
 ```
 
-# Output:
+# Output
 
 ```javascript
 {
