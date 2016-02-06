@@ -29,7 +29,7 @@ function getNode(tree, key) {
 }
 
 export default function map2tree(root, options = {}, tree = {name: options.key || 'state', children: []}) {
-  if (!isPlainObject(root) && !root.toJS) {
+  if (!isPlainObject(root) && root && !root.toJS) {
     return {};
   }
 
@@ -40,8 +40,8 @@ export default function map2tree(root, options = {}, tree = {name: options.key |
     return {};
   }
 
-  mapValues(root.toJS ? root.toJS() : root, (maybeImmutable, key) => {
-    const value = maybeImmutable.toJS ? maybeImmutable.toJS() : maybeImmutable;
+  mapValues(root && root.toJS ? root.toJS() : root, (maybeImmutable, key) => {
+    const value = maybeImmutable && maybeImmutable.toJS ? maybeImmutable.toJS() : maybeImmutable;
     let newNode = {name: key};
 
     if (isArray(value)) {

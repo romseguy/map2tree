@@ -7,7 +7,7 @@
     "clean": "rimraf lib dist",
     "build": "babel src --out-dir lib",
     "build:umd": "webpack src/index.js dist/map2tree.js && NODE_ENV=production webpack src/index.js dist/map2tree.min.js",
-    "lint": "eslint src",
+    "lint": "eslint src test",
     "test": "babel-node test/map2tree.js | tap-diff",
     "check": "npm run lint && npm run test",
     "prepublish": "npm run check && npm run clean && npm run build && npm run build:umd"
