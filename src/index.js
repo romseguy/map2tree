@@ -1,65 +1,89 @@
-import isArray from 'lodash/lang/isArray';
-import isPlainObject from 'lodash/lang/isPlainObject';
-import mapValues from 'lodash/object/mapValues';
+import isPlainObject from 'lodash/isPlainObject';
+import objType from './objType';
 
-function visit(parent, visitFn, childrenFn) {
-  if (!parent) return;
-
-  visitFn(parent);
-
-  const children = childrenFn(parent);
-  if (children) {
-    const count = children.length;
-    for (let i = 0; i < count; i++) {
-      visit(children[i], visitFn, childrenFn);
-    }
-  }
+function isList(maybeList) {
+  // immutable.js implementation detail but I don't know how to check whether an Iterable is a List without `Immutable.List.isList`
+  const IS_LIST_SENTINEL = '@@__IMMUTABLE_LIST__@@';
+  return !!(maybeList && maybeList[IS_LIST_SENTINEL]);
 }
 
-function getNode(tree, key) {
-  let node = null;
+function createNode(rootNodeKey, root, pushMethod) {
+  const rootType = objType(root);
+  let newNode = {name: rootNodeKey};
 
-  visit(tree, d => {
-    if (d.name === key) {
-      node = d;
-    }
-  }, d => d.children);
-
-  return node;
-}
-
-export default function map2tree(rootNode, options = {}, tree = {name: options.key, children: []}) {
-  if (!isPlainObject(rootNode)) {
-    return {};
-  }
-
-  const { key = 'state', pushMethod = 'push' } = options;
-  const currentNode = getNode(tree, key);
-
-  if (currentNode === null) {
-    return {};
-  }
-
-  mapValues(rootNode, (stateValue, stateKey) => {
-    let newNode = {name: stateKey};
-
-    if (isArray(stateValue) || isPlainObject(stateValue)) {
+  switch (rootType) {
+    case 'Array':
       newNode.children = [];
 
-      if (isArray(stateValue) && stateValue.length !== 0) {
-        stateValue.forEach((obj, i) => newNode.children[pushMethod]({
-          name: `${stateKey}[${i}]`,
-          [isPlainObject(obj) ? 'object' : 'value']: obj
-        }));
+      root.forEach((value, index) => {
+        newNode.children[pushMethod]({
+          name: `${rootNodeKey}[${index}]`,
+          [isPlainObject(value) ? 'object' : 'value']: value
+        });
+      });
+      break;
+    case 'Iterable':
+      newNode.children = [];
+
+      for (const entry of root) {
+        let key = null;
+        let value = null;
+
+        if (Array.isArray(entry)) {
+          [key, value] = entry;
+        } else {
+          key = `${rootNodeKey}[${newNode.children.length}]`;
+          value = entry;
+        }
+
+        const valueType = objType(value);
+        let childNode = {
+          name: key
+        };
+
+        if (valueType === 'Array' || valueType === 'Iterable' || valueType === 'Object') {
+          if (valueType === 'Iterable' && isList(root)) {
+            childNode.object = value.toJS();
+          } else {
+            childNode = createNode(key, value, pushMethod)
+          }
+        } else {
+          childNode.value = value;
+        }
+
+        newNode.children[pushMethod](childNode);
       }
-    } else {
-      newNode = {...newNode, value: stateValue};
-    }
+      break;
+    case 'Object':
+      newNode.children = [];
 
-    currentNode.children[pushMethod](newNode);
+      const rootKeys = Object.keys(root);
 
-    map2tree(stateValue, {key: stateKey, pushMethod}, tree);
-  });
+      for (let i = 0; i < rootKeys.length; i++) {
+        const rootKey = rootKeys[i];
+        const rootValue = root[rootKey];
+        const rootValueType = objType(rootValue);
+        let childNode = {name: rootKey, value: rootValue};
 
-  return tree;
+        if (rootValueType === 'Array' || rootValueType === 'Iterable' || rootValueType === 'Object') {
+          childNode = createNode(rootKey, rootValue, pushMethod)
+        }
+
+        newNode.children[pushMethod](childNode);
+      }
+      break;
+    default:
+      newNode.value = value;
+  }
+
+  return newNode;
+}
+
+export default function map2tree(root, options = {}) {
+  const {
+    key:rootNodeKey = 'state',
+    pushMethod = 'push'
+    } = options;
+
+  return createNode(rootNodeKey, root, pushMethod);
 }
