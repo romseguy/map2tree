@@ -1,8 +1,12 @@
-map2tree
-=========================
-Just a function™
+A pure function to convert a map into a tree structure.
 
-Usage:
+The following opinions must be taken into account since the primary use case of this library is [redux-devtools-chart-monitor](https://github.com/romseguy/redux-devtools-chart-monitor):
+
+- Objects and arrays deeply nested within collections are not converted into a tree structure. See `someNestedObject` and `someNestedArray` in the [output](https://github.com/romseguy/map2tree#Output) below, or the [corresponding test](https://github.com/romseguy/map2tree/blob/master/test/map2tree.js#L140).
+- Provides support for [Immutable.js](https://github.com/facebook/immutable-js) data structures (only List and Map though).
+
+
+# Usage:
 
 
 ```javascript
@@ -12,34 +16,34 @@ map2tree(someMap, options = {
 })
 ```
 
-Input:
+# Input:
 
 ```javascript
 const someMap = {
-  someStore: {
+  someReducer: {
     todos: [
-      { title: 'map'},
-      { title: 'to' },
-      { title: 'tree' },
-      { title: 'map2tree' }
+     {title: 'map', someNestedObject: {foo: 'bar'}},
+     {title: 'to', someNestedArray: ['foo', 'bar']},
+     {title: 'tree'},
+     {title: 'map2tree'}
     ],
     completedCount: 1
   },
-  otherStore: {
+  otherReducer: {
     foo: 0,
-    bar: { key: 'value' }
+    bar:{key: 'value'}
   }
 };
 ```
 
-Output:
+# Output:
 
 ```javascript
 {
   name: `${options.key}`,
   children: [
     {
-      name: 'someStore',
+      name: 'someReducer',
       children: [
         {
           name: 'todos',
@@ -47,15 +51,22 @@ Output:
             {
               name: 'todo[0]',
               object: {
-                title: 'map'
+                title: 'map',
+                someNestedObject: {foo: 'bar'}
               }
-            }
+            },
+            {
+              name: 'todo[1]',
+              value: 'to
+            },
+            // ...
           ]
-        }
+        },
+        // ...
       ]
     },
     {
-      name: 'otherStore',
+      name: 'otherReducer',
       children: [
         {
           name: 'foo',
@@ -72,5 +83,3 @@ Output:
   ]
 }
 ```
-
-[Full example](https://github.com/romseguy/map2tree/blob/master/examples/simple/index.js)
