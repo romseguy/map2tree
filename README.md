@@ -57,7 +57,10 @@ const someMap = {
             },
             {
               name: 'todo[1]',
-              value: 'to
+              object: {
+                title: 'to',
+                someNestedArray: ['foo', 'bar']
+              }
             },
             // ...
           ]
