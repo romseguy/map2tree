@@ -46,7 +46,7 @@
     "webpack": "1.12.13"
   },
   "dependencies": {
-    "lodash": "4.2.1"
+    "lodash": "^4.2.1"
   },
   "npmName": "map2tree",
   "npmFileMap": [
